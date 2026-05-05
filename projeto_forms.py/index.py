@@ -19,6 +19,25 @@ abas.add(aba1, text="Cadastro")
 aba2 = Frame(abas)
 abas.add(aba2, text="Clientes Cadastrados")
 
+#função cadastrar 
+def cadastrar_tabealas():
+    nome = entry_nome.get()
+    telefone = entry_telefone.get()
+    email = entry_email.get()
+    cidade = entry_cidade.get()
+    
+    if nome == "" or telefone == "" or  email == "" or cidade == "":
+        messagebox.showwarning("erro","Prencha todos os campos!")
+    else:
+         tabela.insert("", END, values=(nome, telefone, email, cidade))
+         entry_nome.delete(0,END)
+         entry_telefone.delete(0,END)
+         entry_email.delete(0,END)
+         entry_cidade.delete(0,END)
+         
+         messagebox.showinfo("sucesso", "cliente cadastrado")
+    
+
 ### Aba Cadastro 
 # Usando um LabelFrame para organizar melhor visualmente
 frame_campos = LabelFrame(aba1, text=" Informações do Cliente ", padx=10, pady=10)
@@ -44,15 +63,34 @@ Label(frame_campos, text="Cidade").pack(anchor="w")
 entry_cidade = Entry(frame_campos, width=40)
 entry_cidade.pack(pady=5)
 
+# --- O BOTÃO CORRIGIDO ---
 Button(
     aba1,
     text="Cadastrar Cliente",
-    bg="#27ae60", # Um verde mais moderno
+    bg="#27ae60",
     fg="white",
     font=("Arial", 10, "bold"),
     width=25,
-    command=lambda: messagebox.showinfo("Sucesso", "Dados prontos para salvar!")
+    command=cadastrar_tabealas  # <--- Agora ele chama sua função!
 ).pack(pady=10)
+
+### Aba Tabela (Treeview)
+colunas = ("nome", "telefone", "email", "cidade")
+tabela = ttk.Treeview(aba2, columns=colunas, show="headings")
+
+# Títulos das colunas
+tabela.heading("nome", text="Nome Completo")
+tabela.heading("telefone", text="Telefone")
+tabela.heading("email", text="E-mail")
+tabela.heading("cidade", text="Cidade")
+
+# Largura das colunas
+tabela.column("nome", width=150)
+tabela.column("telefone", width=100)
+tabela.column("email", width=150)
+tabela.column("cidade", width=100)
+
+tabela.pack(fill="both", expand=True, padx=10, pady=10)
 
 ### Aba Tabela (Treeview)
 colunas = ("nome", "telefone", "email", "cidade")
